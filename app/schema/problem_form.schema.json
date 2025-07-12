@@ -41,6 +41,9 @@
         "type": "string"
       },
       "uniqueItems": true
+    },
+    "_id": {
+        "type": "string"
     }
   },
   "required": [

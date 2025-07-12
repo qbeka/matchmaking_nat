@@ -1,6 +1,6 @@
 import pytest
 import numpy as np
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch, MagicMock, AsyncMock
 
 from app.matching.build_team_problem_matrix import build_team_problem_matrix
 from app.matching.final_hungarian import (
@@ -123,7 +123,7 @@ async def test_stats_calculation():
 @pytest.mark.asyncio
 @patch("app.matching.final_hungarian.db")
 async def test_store_assignments(mock_db):
-    mock_db.assignments.insert_one.return_value = MagicMock(inserted_id="test_id")
+    mock_db.assignments.insert_one = AsyncMock(return_value=MagicMock(inserted_id="test_id"))
     
     assignment_id = await store_final_assignments({"p0": "t0"}, 5.0)
     

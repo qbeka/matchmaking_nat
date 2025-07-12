@@ -43,7 +43,7 @@ async def store_final_assignments(
         total_cost=total_cost,
         created_at=datetime.now(timezone.utc)
     )
-    result = await db.assignments.insert_one(assignment_doc.dict(by_alias=True))
+    result = await db.assignments.insert_one(assignment_doc.model_dump(by_alias=True))
     return str(result.inserted_id)
 
 async def calculate_assignment_statistics(

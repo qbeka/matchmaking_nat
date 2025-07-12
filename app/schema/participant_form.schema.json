@@ -23,11 +23,11 @@
       "items": {
         "type": "string",
         "enum": [
-          "frontend_dev",
-          "backend_dev",
-          "fullstack_dev",
-          "data_scientist",
-          "devops_engineer",
+          "frontend",
+          "backend",
+          "fullstack",
+          "data_science",
+          "devops",
           "product_manager",
           "designer"
         ]
@@ -57,6 +57,9 @@
       "type": "string",
       "description": "Motivation for joining the hackathon.",
       "minLength": 40
+    },
+    "_id": {
+        "type": "string"
     }
   },
   "required": [

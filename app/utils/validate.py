@@ -2,11 +2,12 @@ import json
 from pathlib import Path
 from typing import Any, Dict
 
+import jsonschema
 from fastapi import HTTPException
 from jsonschema import Draft7Validator
 from pydantic import ValidationError as PydanticValidationError
 
-from app.models import ParticipantModel, ProblemModel
+from app.models import Participant, Problem
 
 SCHEMA_DIR = Path(__file__).parent.parent / "schema"
 PARTICIPANT_SCHEMA_PATH = SCHEMA_DIR / "participant_form.schema.json"
@@ -36,25 +37,17 @@ def _format_jsonschema_errors(errors):
     return error_details
 
 
-def validate_participant(data: Dict[str, Any]) -> ParticipantModel:
-    errors = list(participant_validator.iter_errors(data))
-    if errors:
-        raise HTTPException(
-            status_code=422, detail=_format_jsonschema_errors(errors)
-        )
+def validate_participant(data: Dict[str, Any]) -> Participant:
     try:
-        return ParticipantModel.model_validate(data)
-    except PydanticValidationError as e:
-        raise HTTPException(status_code=422, detail=e.errors())
+        jsonschema.validate(instance=data, schema=participant_schema)
+        return Participant(**data)
+    except (jsonschema.exceptions.ValidationError, PydanticValidationError) as e:
+        raise HTTPException(status_code=422, detail=str(e))
 
 
-def validate_problem(data: Dict[str, Any]) -> ProblemModel:
-    errors = list(problem_validator.iter_errors(data))
-    if errors:
-        raise HTTPException(
-            status_code=422, detail=_format_jsonschema_errors(errors)
-        )
+def validate_problem(data: Dict[str, Any]) -> Problem:
     try:
-        return ProblemModel.model_validate(data)
-    except PydanticValidationError as e:
-        raise HTTPException(status_code=422, detail=e.errors()) 
+        jsonschema.validate(instance=data, schema=problem_schema)
+        return Problem(**data)
+    except (jsonschema.exceptions.ValidationError, PydanticValidationError) as e:
+        raise HTTPException(status_code=422, detail=str(e)) 

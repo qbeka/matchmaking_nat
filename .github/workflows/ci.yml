@@ -33,7 +33,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.11'
+        python-version: '3.12'
 
     - name: Install Poetry
       uses: snok/install-poetry@v1
@@ -58,3 +58,5 @@ jobs:
       run: poetry run pytest
       env:
         OPENAI_API_KEY: "test"
+        PINECONE_API_KEY: "dummy"
+        PINECONE_ENV: "us-east-1"

@@ -23,19 +23,24 @@ def base_team_vector():
         min_availability=30,
         avg_motivation_embedding=np.random.rand(10).tolist(),
         avg_ambiguity_tolerance=0.7,
+        avg_communication_style=0.5,
         avg_confidence_score=0.8
     )
 
 @pytest.fixture
 def base_problem():
     return Problem(
-        name="Test Problem",
-        description="A problem for testing.",
+        version="1.0.0",
+        _id="problem_1",
+        title="Test Problem",
+        raw_prompt="A problem for testing.",
+        estimated_team_size=4,
+        preferred_roles={"backend": 1.0},
+        problem_embedding=np.random.rand(10).tolist(),
         required_skills={"python": 4.0, "fastapi": 4.0},
         role_preferences={"backend": 1.0},
         expected_ambiguity=0.6,
         expected_hours_per_week=25,
-        problem_embedding=np.random.rand(10).tolist(),
     )
 
 @pytest.mark.asyncio

@@ -1,12 +1,36 @@
 import asyncio
 
 import redis.asyncio as redis
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
 
 from app.worker.tasks import run_stage_one, run_stage_two, run_stage_three
+from app.db import db
+from app.vector.pinecone_client import pinecone_client
 
 router = APIRouter()
+
+
+@router.get("/similarity/{participant_id}")
+async def get_similar_problems(participant_id: str):
+    """
+    Returns the top 10 most similar problems for a given participant.
+    """
+    participant = await db.participants.find_one({"_id": participant_id})
+    if not participant or "motivation_embedding" not in participant:
+        raise HTTPException(status_code=404, detail="Participant or embedding not found")
+
+    embedding = participant["motivation_embedding"]
+    
+    try:
+        matches = await pinecone_client.query(
+            top_k=10,
+            vector=embedding
+        )
+        problem_ids = [match['id'] for match in matches if match['id'].startswith("problem:")]
+        return {"participant_id": participant_id, "similar_problems": problem_ids}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.post("/match/stage1")
@@ -45,7 +69,6 @@ async def get_phase_two_status():
         await pubsub.subscribe("match_progress")
         
         # Also send current team summaries if available
-        from app.db import db
         try:
             async for team_doc in db.final_teams.find({}):
                 team_summary = {
@@ -73,8 +96,6 @@ async def get_phase_two_status():
 async def start_phase_three_matching():
     """Start phase 3 matching (final team-to-problem assignment)."""
     # Check if phase 2 is complete
-    from app.db import db
-    
     team_count = await db.final_teams.count_documents({})
     if team_count == 0:
         return {"error": "Phase 2 must be completed first. No final teams found."}

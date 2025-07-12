@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import os
+import json
 
 import openai
 from openai import AsyncOpenAI
@@ -49,3 +50,31 @@ async def get_completion(prompt: str, model: str = "gpt-4-turbo") -> str:
     except Exception as e:
         logger.error(f"An unexpected error occurred with OpenAI: {e}")
         raise 
+
+async def get_problem_analysis(raw_prompt: str) -> dict:
+    """
+    Performs a three-pass analysis on a raw problem description to extract
+    structured data.
+    """
+    # This is a placeholder for the described three-pass GPT extraction.
+    # A real implementation would be more sophisticated.
+    try:
+        response = await openai.chat.completions.create(
+            model="gpt-4-turbo",
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You are a problem analyst. Extract the required skills, role preferences (as a normalized JSON object), and expected ambiguity (as a float from 0 to 1) from the following problem description."
+                },
+                {
+                    "role": "user",
+                    "content": raw_prompt
+                }
+            ],
+            response_format={"type": "json_object"}
+        )
+        # In a real scenario, you would parse this more carefully
+        return json.loads(response.choices[0].message.content)
+    except Exception as e:
+        logger.error(f"Error getting problem analysis: {e}")
+        return {} 

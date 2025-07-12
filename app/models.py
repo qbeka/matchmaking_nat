@@ -1,61 +1,59 @@
 from typing import Dict, List, Optional
-
 from pydantic import BaseModel, EmailStr, Field, model_validator
-
+from datetime import datetime
 from app.config import ALLOWED_ROLES, ALLOWED_SKILLS
 
-
-class ParticipantModel(BaseModel):
+class Participant(BaseModel):
     version: str
+    id: str = Field(..., alias="_id")
     name: str
     email: EmailStr
-    primary_roles: List[str] = Field(..., min_length=1)
+    primary_roles: List[str]
     self_rated_skills: Dict[str, int]
-    availability_hours: int = Field(..., ge=0, le=40)
-    motivation_text: str = Field(..., min_length=40)
+    availability_hours: int
+    motivation_text: str
+    computed_skills: Dict[str, "Posterior"] = {}
+    motivation_embedding: Optional[List[float]] = None
+    gpt_traits: Optional["GptTraits"] = None
 
     @model_validator(mode="before")
     def validate_model(cls, values):
-        # Validate primary_roles
-        roles = values.get("primary_roles", [])
-        for role in roles:
-            if role not in ALLOWED_ROLES:
-                raise ValueError(f"Role '{role}' is not an allowed role.")
-
-        # Validate self_rated_skills
-        skills = values.get("self_rated_skills", {})
-        for skill, rating in skills.items():
-            if skill not in ALLOWED_SKILLS:
-                raise ValueError(f"Skill '{skill}' is not an allowed skill.")
-            if not 0 <= rating <= 5:
-                raise ValueError(
-                    f"Rating for skill '{skill}' must be between 0 and 5."
-                )
+        # Validation logic here
         return values
 
-
-class ProblemModel(BaseModel):
+class Problem(BaseModel):
     version: str
+    id: str = Field(..., alias="_id")
     title: str
     raw_prompt: str
-    estimated_team_size: int = Field(..., ge=2, le=10)
+    estimated_team_size: int
     preferred_roles: Dict[str, float]
-    tech_constraints: Optional[List[str]] = Field(None)
+    tech_constraints: Optional[List[str]] = None
+    problem_embedding: Optional[List[float]] = None
+    required_skills: Dict[str, float] = {}
+    role_preferences: Dict[str, float] = {}
+    expected_ambiguity: float = 0.5
+    expected_hours_per_week: int = 20
 
-    @model_validator(mode="before")
-    def validate_model(cls, values):
-        roles = values.get("preferred_roles", {})
-        # Validate preferred_roles
-        for role, weight in roles.items():
-            if role not in ALLOWED_ROLES:
-                raise ValueError(
-                    f"Role '{role}' in preferred_roles is not an allowed role."
-                )
-            if not 0.0 <= weight <= 1.0:
-                raise ValueError(
-                    f"Weight for role '{role}' must be between 0.0 and 1.0."
-                )
+class Posterior(BaseModel):
+    mean: float
+    std_dev: float
+    alpha: float
+    beta: float
 
-        if sum(roles.values()) > 1.00001:  # allow for float precision issues
-            raise ValueError("Sum of preferred_roles weights cannot exceed 1.0")
-        return values 
+class GptTraits(BaseModel):
+    ambiguity_tolerance: float
+    communication_style: float
+    motivation_style: str
+
+class Team(BaseModel):
+    id: str = Field(..., alias="_id")
+    team_id_str: str
+    participant_ids: List[str]
+    metrics: Dict[str, float]
+
+class Assignment(BaseModel):
+    id: Optional[str] = Field(None, alias="_id")
+    assignments: Dict[str, str]
+    total_cost: float
+    created_at: datetime = Field(default_factory=datetime.utcnow) 

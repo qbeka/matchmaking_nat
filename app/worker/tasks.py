@@ -14,6 +14,8 @@ from app.matching.hungarian_capacity import solve_hungarian_capacity
 from app.matching.team_builder import build_provisional_teams
 from app.matching.slot_solver import solve_team_slots, calculate_team_coverage_metrics
 from app.db import db
+from app.llm.openai_client import get_gpt_analysis, get_embedding
+from app.vector.pinecone_client import pinecone_client
 
 logger = logging.getLogger(__name__)
 redis_client = redis.Redis(host='localhost', port=6379, db=0)
@@ -49,6 +51,17 @@ async def score_participant(self, participant_payload: Dict[str, Any]):
     # Placeholder for where the full enriched record will be written to MongoDB.
     enriched_participant = participant.dict()
     enriched_participant["enriched_skills"] = enriched_skills
+    
+    # Get GPT analysis and embedding
+    gpt_analysis = await get_gpt_analysis(participant.motivation_text)
+    enriched_participant["gpt_traits"] = gpt_analysis
+    
+    motivation_embedding = await get_embedding(participant.motivation_text)
+    enriched_participant["motivation_embedding"] = motivation_embedding
+    
+    # Upsert to Pinecone
+    await pinecone_client.upsert_vectors([(str(participant.id), np.array(motivation_embedding))])
+    
     logger.info(
         f"Successfully scored participant {participant.email}"
     )

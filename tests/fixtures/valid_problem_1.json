@@ -1,12 +1,11 @@
 {
-  "version": "1.0.0",
-  "title": "Automated Team Formation Service",
-  "raw_prompt": "Design and build a service that automates the process of forming balanced teams for a hackathon. The service should take into account participant skills, roles, and preferences.",
-  "estimated_team_size": 4,
-  "preferred_roles": {
-    "backend_dev": 0.5,
-    "frontend_dev": 0.25,
-    "devops_engineer": 0.25
-  },
-  "tech_constraints": ["Python", "FastAPI", "Docker"]
+    "version": "1.0.0",
+    "_id": "problem_1",
+    "title": "AI-Powered Code Review Assistant",
+    "raw_prompt": "Develop a tool that uses a large language model to automatically review pull requests, check for common errors, and suggest improvements.",
+    "estimated_team_size": 4,
+    "preferred_roles": {
+        "backend": 0.7,
+        "devops": 0.3
+    }
 } 

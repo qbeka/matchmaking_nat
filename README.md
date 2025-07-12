@@ -19,10 +19,19 @@ To launch the local development stack, you will need Docker and Docker Compose i
 This will start the following services:
 -   **MongoDB:** `localhost:27017`
 -   **Redis:** `localhost:6379`
--   **FastAPI:** `localhost:8000`
+-   **Pinecone Mock:** `localhost:8000`
+-   **FastAPI:** `localhost:8001`
 -   **Celery Worker:** Processes background tasks.
 
-The API documentation will be available at `http://localhost:8000/docs`. 
+The API documentation will be available at `http://localhost:8001/docs`. 
+
+## Environment Variables
+
+The following environment variables need to be set in your `.env` file:
+
+- `OPENAI_API_KEY`: Your API key for OpenAI services.
+- `PINECONE_API_KEY`: Your API key for Pinecone. For local development with the mock server, this can be a dummy value.
+- `PINECONE_ENV`: The Pinecone environment to use (e.g., `us-east-1`).
 
 ## Stage One: Preliminary Matching
 
