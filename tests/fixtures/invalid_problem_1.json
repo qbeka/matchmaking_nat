@@ -1,0 +1,10 @@
+{
+  "version": "1.0.0",
+  "title": "Real-time Collaborative Whiteboard",
+  "raw_prompt": "Create a web-based real-time collaborative whiteboard application that allows multiple users to draw and share ideas simultaneously.",
+  "estimated_team_size": 3,
+  "preferred_roles": {
+    "frontend_dev": 0.6,
+    "backend_dev": 0.5
+  }
+} 

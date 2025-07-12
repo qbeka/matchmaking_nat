@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "name": "Jane Doe",
+  "email": "jane.doe@",
+  "primary_roles": ["data_scientist"],
+  "self_rated_skills": {
+    "Python": 5,
+    "Machine Learning": 5
+  },
+  "availability_hours": 40,
+  "motivation_text": "I am a data scientist and I want to apply my skills to a real-world problem and collaborate with other talented people."
+} 

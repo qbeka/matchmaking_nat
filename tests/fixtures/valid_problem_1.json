@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "title": "Automated Team Formation Service",
+  "raw_prompt": "Design and build a service that automates the process of forming balanced teams for a hackathon. The service should take into account participant skills, roles, and preferences.",
+  "estimated_team_size": 4,
+  "preferred_roles": {
+    "backend_dev": 0.5,
+    "frontend_dev": 0.25,
+    "devops_engineer": 0.25
+  },
+  "tech_constraints": ["Python", "FastAPI", "Docker"]
+} 

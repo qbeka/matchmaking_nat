@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Problem Submission",
+  "description": "Schema for NAT Ignite 2025 problem submissions.",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Schema version."
+    },
+    "title": {
+      "type": "string",
+      "description": "Title of the problem statement."
+    },
+    "raw_prompt": {
+      "type": "string",
+      "description": "The full problem prompt."
+    },
+    "estimated_team_size": {
+      "type": "integer",
+      "description": "Estimated number of team members required.",
+      "minimum": 2,
+      "maximum": 10
+    },
+    "preferred_roles": {
+      "type": "object",
+      "description": "Ideal distribution of roles for this problem. Weights must sum to 1.0 or less.",
+      "patternProperties": {
+        "^[a-zA-Z_]+$": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "tech_constraints": {
+      "type": "array",
+      "description": "Optional list of required technologies or constraints.",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "version",
+    "title",
+    "raw_prompt",
+    "estimated_team_size",
+    "preferred_roles"
+  ],
+  "additionalProperties": false
+} 

@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Participant Submission",
+  "description": "Schema for NAT Ignite 2025 participant submissions.",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Schema version."
+    },
+    "name": {
+      "type": "string",
+      "description": "Full name of the participant."
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "Email address of the participant."
+    },
+    "primary_roles": {
+      "type": "array",
+      "description": "Participant's preferred primary roles.",
+      "items": {
+        "type": "string",
+        "enum": [
+          "frontend_dev",
+          "backend_dev",
+          "fullstack_dev",
+          "data_scientist",
+          "devops_engineer",
+          "product_manager",
+          "designer"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "self_rated_skills": {
+      "type": "object",
+      "description": "Self-rated skills on a scale of 0-5.",
+      "patternProperties": {
+        "^[a-zA-Z0-9_ -+]+$": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 5
+        }
+      },
+      "additionalProperties": false
+    },
+    "availability_hours": {
+      "type": "integer",
+      "description": "Weekly hours available for the project.",
+      "minimum": 0,
+      "maximum": 40
+    },
+    "motivation_text": {
+      "type": "string",
+      "description": "Motivation for joining the hackathon.",
+      "minLength": 40
+    }
+  },
+  "required": [
+    "version",
+    "name",
+    "email",
+    "primary_roles",
+    "self_rated_skills",
+    "availability_hours",
+    "motivation_text"
+  ],
+  "additionalProperties": false
+} 

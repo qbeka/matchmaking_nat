@@ -9,6 +9,23 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      mongo:
+        image: mongo
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "echo 'db.runCommand({ping: 1})' | mongo"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
     - uses: actions/checkout@v4
@@ -26,6 +43,11 @@ jobs:
     - name: Install dependencies
       run: poetry install
 
+    - name: Run Celery dry-run
+      run: poetry run celery -A app.worker.celery_app worker --dry-run
+      env:
+        OPENAI_API_KEY: "test"
+
     - name: Run pre-commit hooks
       run: poetry run pre-commit run --all-files
 
@@ -34,3 +56,5 @@ jobs:
 
     - name: Run tests
       run: poetry run pytest
+      env:
+        OPENAI_API_KEY: "test"

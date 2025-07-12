@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "name": "John Doe",
+  "email": "john.doe@example.com",
+  "primary_roles": ["backend_dev", "frontend_dev"],
+  "self_rated_skills": {
+    "Python": 4,
+    "JavaScript": 3,
+    "SQL": 5
+  },
+  "availability_hours": 30,
+  "motivation_text": "I am very excited to join this hackathon and build something amazing with a great team. I want to learn new technologies."
+} 

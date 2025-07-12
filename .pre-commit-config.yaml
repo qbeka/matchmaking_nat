@@ -5,23 +5,25 @@ repos:
     -   id: check-yaml
     -   id: end-of-file-fixer
     -   id: trailing-whitespace
--   repo: https://github.com/psf/black
-    rev: 24.4.2
-    hooks:
-    -   id: black
-        args: [--check]
--   repo: https://github.com/PyCQA/isort
-    rev: 5.13.2
-    hooks:
-    -   id: isort
-        args: ["--check-only"]
 -   repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.4.4
     hooks:
     -   id: ruff
+    -   id: ruff-format
 -   repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.10.0
     hooks:
     -   id: mypy
         # The following args are needed to make mypy work with poetry.
-        additional_dependencies: ["pydantic"]
+        additional_dependencies: ["pydantic", "types-PyYAML"]
+-   repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.28.3
+    hooks:
+      - id: check-jsonschema
+        name: "Check participant JSON-Schema"
+        files: "app/schema/participant_form.schema.json"
+        args: ["--schemafile", "https://json-schema.org/draft-07/schema#"]
+      - id: check-jsonschema
+        name: "Check problem JSON-Schema"
+        files: "app/schema/problem_form.schema.json"
+        args: ["--schemafile", "https://json-schema.org/draft-07/schema#"]
