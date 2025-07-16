@@ -6,21 +6,26 @@ This script loads participant and problem data from JSON files and runs the comp
 NAT Ignite matchmaking pipeline (Phase 1, 2, and 3).
 
 Usage:
-    python matchmaking_service_test.py --participants participant_list.json --problems problem_list.json
-    python matchmaking_service_test.py --help
+    python3 matchmaking_service_test.py --participants participant_list.json --problems problem_list.json
+    python3 matchmaking_service_test.py --help
 
 Requirements:
     - participant_list.json: List of participant objects following the template format
     - problem_list.json: List of problem objects following the template format
-    - Backend services running (MongoDB, Redis, FastAPI on localhost:8000)
+    - Docker and Docker Compose installed
 
-The script will:
-1. Clear existing database data
-2. Load participants and problems
-3. Run Phase 1 (Individual-Problem Matching)
-4. Run Phase 2 (Team Formation) 
-5. Run Phase 3 (Team-Problem Assignment)
-6. Display results summary
+The script will automatically:
+1. Check Docker availability
+2. Start backend services (MongoDB, Redis, FastAPI) via Docker Compose
+3. Clear existing database data
+4. Load participants and problems
+5. Run Phase 1 (Individual-Problem Matching)
+6. Run Phase 2 (Team Formation) 
+7. Run Phase 3 (Team-Problem Assignment)
+8. Display results summary
+9. Stop Docker services when finished
+
+Use --manual-docker flag to manage Docker services yourself.
 """
 
 import argparse
@@ -28,6 +33,9 @@ import json
 import time
 import sys
 import requests
+import subprocess
+import signal
+import atexit
 from pathlib import Path
 from typing import Dict, List, Any, Optional
 import logging
@@ -40,20 +48,118 @@ class MatchmakingTester:
     def __init__(self, base_url: str = "http://localhost:8000"):
         self.base_url = base_url
         self.session = requests.Session()
+        self.docker_process = None
         
+        # Register cleanup function
+        atexit.register(self.cleanup)
+        
+    def check_docker_available(self) -> bool:
+        """Check if Docker is available and running."""
+        try:
+            result = subprocess.run(['docker', '--version'], 
+                                  capture_output=True, text=True, timeout=10)
+            if result.returncode != 0:
+                logger.error("❌ Docker is not installed or not available")
+                return False
+            
+            # Check if Docker daemon is running
+            result = subprocess.run(['docker', 'info'], 
+                                  capture_output=True, text=True, timeout=10)
+            if result.returncode != 0:
+                logger.error("❌ Docker daemon is not running. Please start Docker Desktop.")
+                return False
+            
+            logger.info("✅ Docker is available and running")
+            return True
+            
+        except subprocess.TimeoutExpired:
+            logger.error("❌ Docker commands timed out")
+            return False
+        except FileNotFoundError:
+            logger.error("❌ Docker is not installed")
+            return False
+        except Exception as e:
+            logger.error(f"❌ Error checking Docker: {e}")
+            return False
+    
+    def start_services(self) -> bool:
+        """Start Docker services using docker compose."""
+        logger.info("🚀 Starting Docker services...")
+        
+        try:
+            # Check if services are already running
+            if self.check_backend_health():
+                logger.info("✅ Services are already running")
+                return True
+            
+            # Start docker compose in the background
+            logger.info("   Starting: docker compose up --build")
+            self.docker_process = subprocess.Popen(
+                ['docker', 'compose', 'up', '--build'],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True,
+                bufsize=1,
+                universal_newlines=True
+            )
+            
+            # Wait for services to be ready
+            logger.info("   Waiting for services to be ready...")
+            max_wait = 120  # 2 minutes
+            wait_interval = 5
+            
+            for i in range(0, max_wait, wait_interval):
+                if self.docker_process.poll() is not None:
+                    # Process has terminated
+                    logger.error("❌ Docker compose process terminated unexpectedly")
+                    return False
+                
+                if self.check_backend_health():
+                    logger.info(f"✅ Services are ready after {i + wait_interval} seconds")
+                    return True
+                
+                logger.info(f"   Still waiting... ({i + wait_interval}s elapsed)")
+                time.sleep(wait_interval)
+            
+            logger.error(f"❌ Services failed to start within {max_wait} seconds")
+            return False
+            
+        except FileNotFoundError:
+            logger.error("❌ docker compose not found. Please install Docker Compose.")
+            return False
+        except Exception as e:
+            logger.error(f"❌ Error starting services: {e}")
+            return False
+    
+    def cleanup(self):
+        """Clean up Docker services when script exits."""
+        if self.docker_process and self.docker_process.poll() is None:
+            logger.info("🛑 Stopping Docker services...")
+            try:
+                # Send SIGTERM to docker compose
+                self.docker_process.terminate()
+                
+                # Wait a bit for graceful shutdown
+                try:
+                    self.docker_process.wait(timeout=10)
+                except subprocess.TimeoutExpired:
+                    # Force kill if it doesn't stop gracefully
+                    self.docker_process.kill()
+                    self.docker_process.wait()
+                
+                logger.info("✅ Docker services stopped")
+            except Exception as e:
+                logger.warning(f"⚠️  Error stopping Docker services: {e}")
+    
     def check_backend_health(self) -> bool:
         """Check if the backend services are running."""
         try:
             response = self.session.get(f"{self.base_url}/health", timeout=5)
             if response.status_code == 200:
-                logger.info("✅ Backend services are running")
                 return True
             else:
-                logger.error(f"❌ Backend health check failed: HTTP {response.status_code}")
                 return False
-        except requests.exceptions.RequestException as e:
-            logger.error(f"❌ Cannot connect to backend at {self.base_url}: {e}")
-            logger.error("Make sure to run: docker compose up --build")
+        except requests.exceptions.RequestException:
             return False
     
     def clear_database(self) -> bool:
@@ -276,8 +382,14 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-    python matchmaking_service_test.py --participants participant_list.json --problems problem_list.json
-    python matchmaking_service_test.py -p participants.json -pr problems.json --timeout 600
+    # Automatic mode (starts Docker services automatically)
+    python3 matchmaking_service_test.py --participants participant_list.json --problems problem_list.json
+    
+    # Manual Docker mode (you manage Docker services yourself)
+    python3 matchmaking_service_test.py -p participants.json -pr problems.json --manual-docker
+    
+    # With custom timeout and dry run
+    python3 matchmaking_service_test.py -p participants.json -pr problems.json --timeout 600 --dry-run
     
 Template files are available in the templates/ directory.
         """
@@ -295,17 +407,32 @@ Template files are available in the templates/ directory.
                        help='Skip clearing existing database data')
     parser.add_argument('--dry-run', action='store_true',
                        help='Only load data, skip running matching phases')
+    parser.add_argument('--manual-docker', action='store_true',
+                       help='Skip automatic Docker startup (manage Docker services manually)')
     
     args = parser.parse_args()
     
     # Initialize tester
     tester = MatchmakingTester(args.base_url)
     
-    # Check backend health
-    if not tester.check_backend_health():
-        logger.error("❌ Backend services are not available. Please start them first:")
-        logger.error("   docker compose up --build")
-        sys.exit(1)
+    # Handle Docker services
+    if args.manual_docker:
+        # Manual Docker mode - just check if services are running
+        logger.info("🐳 Manual Docker mode - checking if services are running...")
+        if not tester.check_backend_health():
+            logger.error("❌ Backend services are not running.")
+            logger.error("   Please start them manually: docker compose up --build")
+            sys.exit(1)
+        logger.info("✅ Backend services are running")
+    else:
+        # Automatic Docker mode - check Docker availability and start services
+        if not tester.check_docker_available():
+            sys.exit(1)
+        
+        # Start services (will check if already running first)
+        if not tester.start_services():
+            logger.error("❌ Failed to start backend services")
+            sys.exit(1)
     
     try:
         # Clear database (unless skipped)
