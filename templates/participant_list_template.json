@@ -1,0 +1,137 @@
+[
+  {
+    "_comment": "This is a template for participant data. Remove this comment field before using.",
+    "_description": "Each participant object must contain all required fields with appropriate data types and value ranges.",
+    
+    "participant_id": "unique_participant_001",
+    "name": "Jane Smith",
+    "email": "jane.smith@example.com",
+    
+    "self_rated_skills": {
+      "_comment": "Skills rated from 1-10. Include 3-8 relevant skills for the hackathon.",
+      "python": 8,
+      "javascript": 7,
+      "react": 6,
+      "machine_learning": 5,
+      "ui_design": 4,
+      "project_management": 6
+    },
+    
+    "primary_roles": [
+      "_comment: Select 1-3 roles from: developer, designer, product_manager, data_scientist, researcher, marketer, business_analyst",
+      "developer",
+      "data_scientist"
+    ],
+    
+    "motivation": "I'm passionate about using technology to solve environmental challenges and want to work on projects that have real-world impact. I enjoy collaborating with diverse teams and learning new technologies.",
+    
+    "availability_hours": 30,
+    "_availability_comment": "Total hours available for the hackathon (typically 15-40 hours)",
+    
+    "ambiguity_comfort": 7,
+    "_ambiguity_comment": "Comfort level with ambiguous/undefined problems, scale 1-10 (1=needs clear requirements, 10=thrives in ambiguity)",
+    
+    "leadership_preference": false,
+    "_leadership_comment": "Set to true for approximately 20% of participants who prefer leadership roles",
+    
+    "communication_style": "collaborative",
+    "_communication_options": "collaborative, direct, analytical, creative",
+    
+    "previous_experience": [
+      "2 years web development",
+      "participated in 3 hackathons",
+      "built ML model for university project"
+    ],
+    
+    "interests": [
+      "environmental_technology",
+      "social_impact",
+      "mobile_apps",
+      "data_visualization"
+    ]
+  },
+  {
+    "_example_2": "Second participant example with different profile",
+    
+    "participant_id": "unique_participant_002", 
+    "name": "Alex Chen",
+    "email": "alex.chen@example.com",
+    
+    "self_rated_skills": {
+      "ui_design": 9,
+      "user_research": 8,
+      "prototyping": 7,
+      "figma": 8,
+      "html_css": 6,
+      "product_strategy": 7
+    },
+    
+    "primary_roles": [
+      "designer",
+      "product_manager"
+    ],
+    
+    "motivation": "I love creating user-centered designs that solve real problems. I'm excited to work with developers and researchers to bring innovative ideas to life.",
+    
+    "availability_hours": 25,
+    "ambiguity_comfort": 8,
+    "leadership_preference": true,
+    "communication_style": "creative",
+    
+    "previous_experience": [
+      "5 years UX design",
+      "led design for 2 startups",
+      "design thinking workshop facilitator"
+    ],
+    
+    "interests": [
+      "accessibility",
+      "human_computer_interaction", 
+      "design_systems",
+      "user_psychology"
+    ]
+  },
+  {
+    "_example_3": "Third participant example - technical specialist",
+    
+    "participant_id": "unique_participant_003",
+    "name": "Dr. Maria Rodriguez", 
+    "email": "maria.rodriguez@university.edu",
+    
+    "self_rated_skills": {
+      "machine_learning": 9,
+      "data_analysis": 9,
+      "python": 8,
+      "statistics": 9,
+      "research_methodology": 8,
+      "tensorflow": 7,
+      "data_visualization": 6
+    },
+    
+    "primary_roles": [
+      "data_scientist",
+      "researcher"
+    ],
+    
+    "motivation": "I want to apply my research expertise to practical problems and collaborate with industry professionals to create impactful solutions.",
+    
+    "availability_hours": 35,
+    "ambiguity_comfort": 9,
+    "leadership_preference": false,
+    "communication_style": "analytical",
+    
+    "previous_experience": [
+      "PhD in Computer Science",
+      "10+ years research experience",
+      "published 15 papers on ML",
+      "consulted for tech companies"
+    ],
+    
+    "interests": [
+      "artificial_intelligence",
+      "healthcare_technology",
+      "ethics_in_ai",
+      "open_source"
+    ]
+  }
+] 

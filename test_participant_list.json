@@ -1,0 +1,290 @@
+[
+  {
+    "participant_id": "test_participant_001",
+    "name": "Alice Johnson",
+    "email": "alice.johnson@university.edu",
+    "self_rated_skills": {
+      "python": 8,
+      "machine_learning": 9,
+      "data_analysis": 8,
+      "tensorflow": 7,
+      "statistics": 8
+    },
+    "primary_roles": ["data_scientist", "researcher"],
+    "motivation": "I want to apply machine learning to solve real-world problems and collaborate with diverse teams to create impactful solutions.",
+    "availability_hours": 35,
+    "ambiguity_comfort": 8,
+    "leadership_preference": true,
+    "communication_style": "analytical",
+    "previous_experience": [
+      "PhD in Machine Learning",
+      "3 years industry experience",
+      "Published 8 research papers"
+    ],
+    "interests": [
+      "artificial_intelligence",
+      "environmental_technology",
+      "data_visualization"
+    ]
+  },
+  {
+    "participant_id": "test_participant_002", 
+    "name": "Bob Chen",
+    "email": "bob.chen@techstartup.com",
+    "self_rated_skills": {
+      "javascript": 9,
+      "react": 8,
+      "node_js": 7,
+      "api_development": 8,
+      "web_development": 9
+    },
+    "primary_roles": ["developer"],
+    "motivation": "I love building user-friendly web applications and want to work on projects that have social impact.",
+    "availability_hours": 30,
+    "ambiguity_comfort": 6,
+    "leadership_preference": false,
+    "communication_style": "collaborative",
+    "previous_experience": [
+      "5 years full-stack development",
+      "Led development for 2 startups",
+      "Expert in React ecosystem"
+    ],
+    "interests": [
+      "web_technologies",
+      "user_experience",
+      "open_source"
+    ]
+  },
+  {
+    "participant_id": "test_participant_003",
+    "name": "Carol Smith",
+    "email": "carol.smith@designstudio.com", 
+    "self_rated_skills": {
+      "ui_design": 9,
+      "user_research": 8,
+      "prototyping": 9,
+      "figma": 9,
+      "design_thinking": 8
+    },
+    "primary_roles": ["designer", "product_manager"],
+    "motivation": "I'm passionate about creating inclusive designs that solve real user problems and improve people's lives.",
+    "availability_hours": 32,
+    "ambiguity_comfort": 9,
+    "leadership_preference": true,
+    "communication_style": "creative",
+    "previous_experience": [
+      "8 years UX/UI design",
+      "Design lead at Fortune 500 company",
+      "Accessibility design specialist"
+    ],
+    "interests": [
+      "accessibility",
+      "inclusive_design",
+      "social_impact",
+      "design_systems"
+    ]
+  },
+  {
+    "participant_id": "test_participant_004",
+    "name": "David Martinez",
+    "email": "david.martinez@consulting.com",
+    "self_rated_skills": {
+      "business_analysis": 9,
+      "financial_modeling": 8,
+      "project_management": 8,
+      "data_visualization": 6,
+      "market_research": 7
+    },
+    "primary_roles": ["business_analyst", "product_manager"],
+    "motivation": "I want to bridge the gap between technology and business value, creating solutions that are both innovative and commercially viable.",
+    "availability_hours": 28,
+    "ambiguity_comfort": 5,
+    "leadership_preference": false,
+    "communication_style": "direct",
+    "previous_experience": [
+      "10 years business consulting",
+      "MBA from top business school",
+      "Specialized in tech strategy"
+    ],
+    "interests": [
+      "fintech",
+      "business_strategy",
+      "market_analysis",
+      "product_development"
+    ]
+  },
+  {
+    "participant_id": "test_participant_005",
+    "name": "Eva Rodriguez",
+    "email": "eva.rodriguez@freelancer.net",
+    "self_rated_skills": {
+      "mobile_development": 8,
+      "swift": 7,
+      "kotlin": 7,
+      "user_interface": 6,
+      "app_store_optimization": 5
+    },
+    "primary_roles": ["developer"],
+    "motivation": "I love creating mobile experiences that are intuitive and accessible to everyone, especially focusing on underserved communities.",
+    "availability_hours": 25,
+    "ambiguity_comfort": 7,
+    "leadership_preference": false,
+    "communication_style": "collaborative",
+    "previous_experience": [
+      "6 years mobile development",
+      "Published 12 apps on App Store",
+      "Freelance developer"
+    ],
+    "interests": [
+      "mobile_technology",
+      "accessibility",
+      "social_apps",
+      "cross_platform_development"
+    ]
+  },
+  {
+    "participant_id": "test_participant_006",
+    "name": "Frank Wilson",
+    "email": "frank.wilson@research.org",
+    "self_rated_skills": {
+      "user_research": 9,
+      "qualitative_analysis": 8,
+      "survey_design": 8,
+      "statistics": 7,
+      "research_methodology": 9
+    },
+    "primary_roles": ["researcher"],
+    "motivation": "I want to ensure that technology solutions are grounded in real user needs and supported by solid research evidence.",
+    "availability_hours": 30,
+    "ambiguity_comfort": 9,
+    "leadership_preference": false,
+    "communication_style": "analytical",
+    "previous_experience": [
+      "PhD in Human-Computer Interaction",
+      "12 years user research experience",
+      "Published researcher in HCI"
+    ],
+    "interests": [
+      "human_computer_interaction",
+      "user_psychology",
+      "research_methods",
+      "accessibility"
+    ]
+  },
+  {
+    "participant_id": "test_participant_007",
+    "name": "Grace Kim",
+    "email": "grace.kim@marketing.agency",
+    "self_rated_skills": {
+      "digital_marketing": 8,
+      "content_strategy": 8,
+      "social_media": 7,
+      "brand_strategy": 7,
+      "market_analysis": 6
+    },
+    "primary_roles": ["marketer", "product_manager"],
+    "motivation": "I want to help innovative solutions reach the people who need them most through effective marketing and community engagement.",
+    "availability_hours": 26,
+    "ambiguity_comfort": 6,
+    "leadership_preference": false,
+    "communication_style": "creative",
+    "previous_experience": [
+      "7 years digital marketing",
+      "Marketing manager at tech startup",
+      "Specialist in product launches"
+    ],
+    "interests": [
+      "digital_marketing",
+      "community_building",
+      "social_impact",
+      "brand_development"
+    ]
+  },
+  {
+    "participant_id": "test_participant_008",
+    "name": "Henry Park",
+    "email": "henry.park@engineer.co",
+    "self_rated_skills": {
+      "python": 8,
+      "backend_development": 9,
+      "database_design": 8,
+      "api_development": 9,
+      "cloud_architecture": 7
+    },
+    "primary_roles": ["developer"],
+    "motivation": "I enjoy building robust, scalable backend systems that can handle real-world complexity and support meaningful applications.",
+    "availability_hours": 33,
+    "ambiguity_comfort": 5,
+    "leadership_preference": false,
+    "communication_style": "direct",
+    "previous_experience": [
+      "8 years backend engineering",
+      "Senior engineer at tech company",
+      "Expert in distributed systems"
+    ],
+    "interests": [
+      "backend_engineering",
+      "distributed_systems",
+      "api_design",
+      "performance_optimization"
+    ]
+  },
+  {
+    "participant_id": "test_participant_009",
+    "name": "Isabel Foster",
+    "email": "isabel.foster@nonprofit.org",
+    "self_rated_skills": {
+      "project_management": 9,
+      "stakeholder_management": 8,
+      "agile_methodology": 7,
+      "community_outreach": 8,
+      "grant_writing": 6
+    },
+    "primary_roles": ["product_manager"],
+    "motivation": "I want to lead projects that create positive social impact and bring together diverse stakeholders to solve complex problems.",
+    "availability_hours": 29,
+    "ambiguity_comfort": 8,
+    "leadership_preference": true,
+    "communication_style": "collaborative",
+    "previous_experience": [
+      "10 years nonprofit management",
+      "PMP certified project manager",
+      "Led multi-million dollar initiatives"
+    ],
+    "interests": [
+      "social_impact",
+      "community_development",
+      "nonprofit_management",
+      "stakeholder_engagement"
+    ]
+  },
+  {
+    "participant_id": "test_participant_010",
+    "name": "Jack Thompson",
+    "email": "jack.thompson@datacompany.com",
+    "self_rated_skills": {
+      "data_visualization": 8,
+      "tableau": 8,
+      "sql": 9,
+      "excel": 9,
+      "business_intelligence": 8
+    },
+    "primary_roles": ["business_analyst", "data_scientist"],
+    "motivation": "I love turning complex data into actionable insights that help organizations make better decisions and improve their impact.",
+    "availability_hours": 31,
+    "ambiguity_comfort": 6,
+    "leadership_preference": false,
+    "communication_style": "analytical",
+    "previous_experience": [
+      "6 years business intelligence",
+      "Data analyst at Fortune 500",
+      "Expert in data visualization"
+    ],
+    "interests": [
+      "data_analytics",
+      "business_intelligence",
+      "data_visualization",
+      "predictive_modeling"
+    ]
+  }
+] 

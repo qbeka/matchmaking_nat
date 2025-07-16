@@ -1,0 +1,20 @@
+# NAT Ignite Matchmaking Results - CSV Export Template
+# Generated: 2025-01-27T15:30:00Z
+# Algorithm: strict_enforcement_v2.0
+# Total Participants: 200, Total Teams: 40, Total Problems: 15
+
+team_id,team_name,assigned_problem_id,assigned_problem_title,team_size,assignment_cost,diversity_score,skills_coverage,participant_id,participant_name,participant_email,participant_role,is_team_leader,availability_hours,skill_1,skill_1_level,skill_2,skill_2_level,skill_3,skill_3_level
+team_001,Team Alpha,problem_001_climate_tech,Smart Energy Management for Buildings,5,0.445,0.78,0.85,participant_001,Jane Smith,jane.smith@example.com,data_scientist,false,30,python,8,machine_learning,7,data_analysis,6
+team_001,Team Alpha,problem_001_climate_tech,Smart Energy Management for Buildings,5,0.445,0.78,0.85,participant_002,Alex Chen,alex.chen@example.com,designer,true,25,ui_design,9,user_research,8,prototyping,7
+team_001,Team Alpha,problem_001_climate_tech,Smart Energy Management for Buildings,5,0.445,0.78,0.85,participant_003,Dr. Maria Rodriguez,maria.rodriguez@university.edu,researcher,false,35,machine_learning,9,data_analysis,9,statistics,9
+team_001,Team Alpha,problem_001_climate_tech,Smart Energy Management for Buildings,5,0.445,0.78,0.85,participant_004,Sam Wilson,sam.wilson@company.com,developer,false,28,python,7,api_development,8,iot_sensors,6
+team_001,Team Alpha,problem_001_climate_tech,Smart Energy Management for Buildings,5,0.445,0.78,0.85,participant_005,Emma Davis,emma.davis@startup.co,product_manager,false,32,product_strategy,8,business_analysis,7,project_management,8
+team_002,Team Beta,problem_002_accessibility,AI-Powered Accessibility Assistant,5,0.378,0.82,0.91,participant_006,Jordan Kim,jordan.kim@techcorp.com,developer,true,35,mobile_development,8,computer_vision,7,machine_learning,6
+team_002,Team Beta,problem_002_accessibility,AI-Powered Accessibility Assistant,5,0.378,0.82,0.91,participant_007,Riley Chen,riley.chen@design.studio,designer,false,30,accessibility_design,9,user_research,8,prototyping,7
+team_002,Team Beta,problem_002_accessibility,AI-Powered Accessibility Assistant,5,0.378,0.82,0.91,participant_008,Dr. Taylor Brown,taylor.brown@university.edu,data_scientist,false,40,computer_vision,9,machine_learning,8,audio_processing,7
+team_002,Team Beta,problem_002_accessibility,AI-Powered Accessibility Assistant,5,0.378,0.82,0.91,participant_009,Casey Lee,casey.lee@nonprofit.org,researcher,false,25,user_research,8,accessibility_design,7,qualitative_research,9
+team_002,Team Beta,problem_002_accessibility,AI-Powered Accessibility Assistant,5,0.378,0.82,0.91,participant_010,Morgan Park,morgan.park@agency.com,product_manager,false,30,product_strategy,7,agile_methodology,8,stakeholder_management,7
+team_003,Team Gamma,problem_003_fintech_sme,Financial Health Dashboard for Small Businesses,4,0.312,0.75,0.88,participant_011,Alex Thompson,alex.thompson@fintech.com,developer,false,32,web_development,8,api_integration,7,financial_analysis,5
+team_003,Team Gamma,problem_003_fintech_sme,Financial Health Dashboard for Small Businesses,4,0.312,0.75,0.88,participant_012,Maya Patel,maya.patel@consulting.com,business_analyst,true,35,financial_analysis,9,business_intelligence,8,data_visualization,7
+team_003,Team Gamma,problem_003_fintech_sme,Financial Health Dashboard for Small Businesses,4,0.312,0.75,0.88,participant_013,Chris Rodriguez,chris.rodriguez@design.co,designer,false,28,user_experience,8,data_visualization,8,web_design,7
+team_003,Team Gamma,problem_003_fintech_sme,Financial Health Dashboard for Small Businesses,4,0.312,0.75,0.88,participant_014,Jamie Foster,jamie.foster@startup.io,product_manager,false,30,product_strategy,8,financial_planning,6,market_research,7 

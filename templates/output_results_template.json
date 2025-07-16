@@ -1,0 +1,190 @@
+{
+  "_comment": "This is a template showing the structure of matchmaking results. The actual output will not contain comment fields.",
+  "_description": "Complete results from the NAT Ignite matchmaking process, including summary statistics, participants, problems, and team assignments.",
+  
+  "timestamp": "2025-01-27T15:30:00Z",
+  "algorithm_version": "strict_enforcement_v2.0",
+  "processing_time_seconds": 45.7,
+  
+  "summary": {
+    "total_participants": 200,
+    "total_problems": 15,
+    "total_teams": 40,
+    "final_assignments": 15,
+    "completion_rate": 1.0,
+    "average_team_size": 5.0,
+    "participants_assigned": 200,
+    "unassigned_participants": 0
+  },
+  
+  "participants": [
+    {
+      "participant_id": "participant_001",
+      "name": "Jane Smith",
+      "email": "jane.smith@example.com",
+      "assigned_team_id": "team_001",
+      "assigned_problem_id": "problem_001_climate_tech",
+      "assignment_cost": 0.234,
+      "role_in_team": "data_scientist",
+      "is_team_leader": false,
+      "phase1_assignment": {
+        "problem_id": "problem_001_climate_tech",
+        "cost": 0.198,
+        "rank": 2
+      }
+    },
+    {
+      "_example_participant_2": "Another participant example",
+      "participant_id": "participant_002", 
+      "name": "Alex Chen",
+      "email": "alex.chen@example.com",
+      "assigned_team_id": "team_001",
+      "assigned_problem_id": "problem_001_climate_tech",
+      "assignment_cost": 0.189,
+      "role_in_team": "designer", 
+      "is_team_leader": true,
+      "phase1_assignment": {
+        "problem_id": "problem_001_climate_tech",
+        "cost": 0.156,
+        "rank": 1
+      }
+    }
+  ],
+  
+  "problems": [
+    {
+      "problem_id": "problem_001_climate_tech",
+      "title": "Smart Energy Management for Buildings",
+      "assigned_team_id": "team_001",
+      "team_assignment_cost": 0.445,
+      "required_team_size": 5,
+      "actual_team_size": 5,
+      "difficulty": "medium",
+      "domain": "environmental_technology"
+    },
+    {
+      "_example_problem_2": "Another problem example",
+      "problem_id": "problem_002_accessibility",
+      "title": "AI-Powered Accessibility Assistant", 
+      "assigned_team_id": "team_002",
+      "team_assignment_cost": 0.378,
+      "required_team_size": 5,
+      "actual_team_size": 5,
+      "difficulty": "hard",
+      "domain": "accessibility"
+    }
+  ],
+  
+  "teams": [
+    {
+      "team_id": "team_001",
+      "team_id_str": "Team Alpha",
+      "assigned_problem": "problem_001_climate_tech",
+      "assigned_problem_title": "Smart Energy Management for Buildings",
+      "final_assignment_cost": 0.445,
+      "team_size": 5,
+      
+      "members": [
+        {
+          "participant_id": "participant_001",
+          "name": "Jane Smith",
+          "email": "jane.smith@example.com",
+          "primary_roles": ["data_scientist", "developer"],
+          "self_rated_skills": {
+            "python": 8,
+            "machine_learning": 7,
+            "data_analysis": 6
+          },
+          "availability_hours": 30,
+          "is_leader": false
+        },
+        {
+          "participant_id": "participant_002",
+          "name": "Alex Chen", 
+          "email": "alex.chen@example.com",
+          "primary_roles": ["designer", "product_manager"],
+          "self_rated_skills": {
+            "ui_design": 9,
+            "user_research": 8,
+            "prototyping": 7
+          },
+          "availability_hours": 25,
+          "is_leader": true
+        }
+      ],
+      
+      "ai_scores": {
+        "diversity_score": 0.78,
+        "skills_coverage": 0.85,
+        "role_coverage": 0.80,
+        "role_balance": 0.75,
+        "confidence_score": 0.72,
+        "strengths": [
+          "Strong technical foundation with ML and development skills",
+          "Excellent design capabilities for user-facing solutions"
+        ],
+        "potential_challenges": [
+          "May need additional business strategy expertise",
+          "Consider adding IoT/hardware experience for building systems"
+        ],
+        "ai_recommendations": "This team has excellent technical depth for the energy management challenge. The combination of data science and design skills is well-suited for creating user-friendly energy optimization tools. Consider focusing on the user interface and data visualization aspects of the solution."
+      },
+      
+      "formation_method": "strict_enforcement",
+      "created_at": "2025-01-27T15:25:00Z",
+      "final_assigned_at": "2025-01-27T15:28:00Z"
+    }
+  ],
+  
+  "phase_statistics": {
+    "phase1": {
+      "status": "completed",
+      "algorithm": "hungarian_algorithm",
+      "duration_seconds": 12.4,
+      "assignments_created": 200,
+      "average_cost": 0.234,
+      "min_cost": 0.089,
+      "max_cost": 0.567
+    },
+    "phase2": {
+      "status": "completed", 
+      "algorithm": "strict_enforcement",
+      "duration_seconds": 28.1,
+      "teams_created": 40,
+      "average_team_size": 5.0,
+      "leadership_assignments": 40,
+      "role_distribution": {
+        "developer": 89,
+        "designer": 45,
+        "data_scientist": 38,
+        "product_manager": 23,
+        "researcher": 5
+      }
+    },
+    "phase3": {
+      "status": "completed",
+      "algorithm": "hungarian_algorithm", 
+      "duration_seconds": 5.2,
+      "assignments_created": 15,
+      "average_cost": 0.423,
+      "total_cost": 6.345,
+      "efficiency": 0.89
+    }
+  },
+  
+  "matching_quality": {
+    "overall_satisfaction": 0.84,
+    "skill_match_quality": 0.79,
+    "role_match_quality": 0.82,
+    "team_size_compliance": 1.0,
+    "leadership_coverage": 1.0,
+    "unassigned_rate": 0.0
+  },
+  
+  "export_metadata": {
+    "generated_at": "2025-01-27T15:30:00Z",
+    "format_version": "2.0",
+    "total_records": 255,
+    "data_completeness": 0.98
+  }
+} 

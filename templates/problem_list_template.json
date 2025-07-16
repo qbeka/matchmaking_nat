@@ -1,0 +1,167 @@
+[
+  {
+    "_comment": "This is a template for problem data. Remove this comment field before using.",
+    "_description": "Each problem object must contain all required fields. Problems define the challenges teams will work on.",
+    
+    "problem_id": "problem_001_climate_tech",
+    "title": "Smart Energy Management for Buildings",
+    "description": "Develop an AI-powered system that optimizes energy consumption in commercial buildings by analyzing usage patterns, weather data, and occupancy levels. The solution should provide real-time recommendations and automated controls to reduce energy waste while maintaining occupant comfort.",
+    
+    "required_skills": {
+      "_comment": "Skills needed for this problem, rated 1-10 for minimum proficiency level",
+      "python": 6,
+      "machine_learning": 7,
+      "data_analysis": 6,
+      "iot_sensors": 5,
+      "ui_design": 4,
+      "api_development": 5
+    },
+    "required_roles": [
+      {"_comment": "Roles needed: developer, designer, product_manager, data_scientist, researcher, marketer, business_analyst"},
+      "data_scientist",
+      "developer",
+      "designer"
+    ],
+    
+    "estimated_hours": 120,
+    "_hours_comment": "Total estimated hours of work needed (typically 100-150 for hackathon projects)",
+    
+    "ambiguity_level": 6,
+    "_ambiguity_comment": "How defined the problem is, scale 1-10 (1=very specific requirements, 10=very open-ended)",
+    
+    "team_size": 5,
+    "_team_size_comment": "Ideal team size for this problem (typically 4-6 people)",
+    
+    "difficulty": "medium",
+    "_difficulty_options": "easy, medium, hard",
+    
+    "domain": "environmental_technology",
+    "tags": [
+      "sustainability",
+      "iot",
+      "machine_learning",
+      "energy_efficiency"
+    ],
+    
+    "success_criteria": [
+      "Functional prototype demonstrating energy optimization",
+      "User interface for building managers",
+      "Data analysis showing potential energy savings",
+      "Presentation of business model"
+    ],
+    
+    "deliverables": [
+      "Working software prototype",
+      "Technical documentation", 
+      "User interface designs",
+      "Business case presentation"
+    ],
+    
+    "additional_context": "Partner organization: GreenTech Solutions. Access to sample building data will be provided. Focus on commercial office buildings with 50-200 employees."
+  },
+  {
+    "_example_2": "Second problem example - social impact focus",
+    
+    "problem_id": "problem_002_accessibility",
+    "title": "AI-Powered Accessibility Assistant",
+    "description": "Create a mobile app that uses computer vision and AI to help visually impaired individuals navigate indoor spaces. The app should provide audio descriptions of surroundings, identify obstacles, read text aloud, and guide users to specific locations within buildings.",
+    
+    "required_skills": {
+      "mobile_development": 7,
+      "computer_vision": 8,
+      "machine_learning": 7,
+      "accessibility_design": 8,
+      "audio_processing": 6,
+      "user_research": 7
+    },
+    
+    "required_roles": [
+      "developer",
+      "data_scientist", 
+      "designer",
+      "researcher"
+    ],
+    
+    "estimated_hours": 140,
+    "ambiguity_level": 7,
+    "team_size": 5,
+    "difficulty": "hard",
+    
+    "domain": "accessibility",
+    "tags": [
+      "social_impact",
+      "computer_vision",
+      "mobile_app",
+      "inclusive_design"
+    ],
+    
+    "success_criteria": [
+      "Functional mobile app with core navigation features",
+      "Accurate object and text recognition",
+      "User-tested interface with accessibility community",
+      "Clear audio feedback system"
+    ],
+    
+    "deliverables": [
+      "Mobile application prototype",
+      "AI model for object recognition",
+      "Accessibility testing report",
+      "User experience documentation"
+    ],
+    
+    "additional_context": "Partnership with National Federation of the Blind. Access to testing facilities and user feedback sessions. Focus on smartphone-based solution using existing hardware."
+  },
+  {
+    "_example_3": "Third problem example - business/fintech focus",
+    
+    "problem_id": "problem_003_fintech_sme",
+    "title": "Financial Health Dashboard for Small Businesses",
+    "description": "Build a comprehensive financial analytics platform that helps small business owners understand their financial health, predict cash flow issues, and receive personalized recommendations for improving profitability. Include integration with common accounting software and banking APIs.",
+    
+    "required_skills": {
+      "financial_analysis": 7,
+      "data_visualization": 8,
+      "api_integration": 6,
+      "web_development": 7,
+      "business_intelligence": 6,
+      "user_experience": 7
+    },
+    
+    "required_roles": [
+      "developer",
+      "business_analyst",
+      "designer",
+      "product_manager"
+    ],
+    
+    "estimated_hours": 100,
+    "ambiguity_level": 4,
+    "team_size": 4,
+    "difficulty": "medium",
+    
+    "domain": "fintech",
+    "tags": [
+      "small_business",
+      "financial_analytics",
+      "dashboard",
+      "predictive_modeling"
+    ],
+    
+    "success_criteria": [
+      "Interactive financial dashboard",
+      "Cash flow prediction model",
+      "Integration with at least one accounting platform",
+      "Mobile-responsive design"
+    ],
+    
+    "deliverables": [
+      "Web application with dashboard",
+      "Financial analysis algorithms",
+      "User interface designs",
+      "Integration documentation",
+      "Business model presentation"
+    ],
+    
+    "additional_context": "Partnership with Small Business Development Center. Access to anonymized financial data from 50+ small businesses. Focus on businesses with $100K-$2M annual revenue."
+  }
+] 

@@ -1,0 +1,99 @@
+[
+  {
+    "problem_id": "test_problem_001_climate_dashboard",
+    "title": "Climate Impact Dashboard for Cities",
+    "description": "Develop a comprehensive web-based dashboard that helps city planners and environmental agencies track, visualize, and predict climate-related metrics for urban areas. The solution should integrate multiple data sources (weather, air quality, energy consumption, transportation) and provide actionable insights for reducing urban carbon footprint. Include predictive modeling for climate impact scenarios and user-friendly interfaces for both technical and non-technical stakeholders.",
+    "required_skills": {
+      "data_visualization": 7,
+      "web_development": 6,
+      "python": 6,
+      "machine_learning": 5,
+      "api_development": 5,
+      "ui_design": 6,
+      "business_analysis": 4
+    },
+    "required_roles": [
+      "data_scientist",
+      "developer", 
+      "designer",
+      "business_analyst"
+    ],
+    "estimated_hours": 120,
+    "ambiguity_level": 6,
+    "team_size": 5,
+    "difficulty": "medium",
+    "domain": "environmental_technology",
+    "tags": [
+      "climate_change",
+      "data_visualization",
+      "urban_planning",
+      "predictive_modeling",
+      "government_tech"
+    ],
+    "success_criteria": [
+      "Interactive web dashboard with real-time data visualization",
+      "Integration with at least 3 different data sources",
+      "Predictive model for climate impact scenarios",
+      "User-tested interface for non-technical users",
+      "Documented API for data access"
+    ],
+    "deliverables": [
+      "Fully functional web application",
+      "Data integration and processing pipeline",
+      "Machine learning models for predictions",
+      "User interface designs and prototypes",
+      "Technical documentation and deployment guide",
+      "Business case presentation for city adoption"
+    ],
+    "additional_context": "Partnership with Metropolitan Climate Council. Access to real city data from 5 pilot cities. Focus on actionable insights that city planners can use immediately. Consider scalability for cities of different sizes (50K to 2M population)."
+  },
+  {
+    "problem_id": "test_problem_002_accessibility_platform",
+    "title": "Universal Accessibility Testing Platform",
+    "description": "Create a comprehensive platform that helps developers and designers test and improve the accessibility of their digital products. The solution should combine automated accessibility testing, user feedback collection from people with disabilities, and educational resources. Include mobile app for accessibility audits, web platform for team collaboration, and community features for sharing best practices. Focus on making accessibility testing more accessible and actionable for development teams.",
+    "required_skills": {
+      "mobile_development": 7,
+      "web_development": 8,
+      "user_research": 8,
+      "accessibility_design": 9,
+      "api_development": 6,
+      "project_management": 6,
+      "community_outreach": 5
+    },
+    "required_roles": [
+      "developer",
+      "designer",
+      "researcher", 
+      "product_manager"
+    ],
+    "estimated_hours": 140,
+    "ambiguity_level": 7,
+    "team_size": 5,
+    "difficulty": "hard",
+    "domain": "accessibility",
+    "tags": [
+      "accessibility",
+      "inclusive_design",
+      "developer_tools",
+      "community_platform",
+      "social_impact",
+      "mobile_app"
+    ],
+    "success_criteria": [
+      "Mobile app for on-site accessibility audits",
+      "Web platform for team collaboration and reporting",
+      "Integration with popular development tools",
+      "Community features tested with accessibility advocates",
+      "Educational content validated by accessibility experts"
+    ],
+    "deliverables": [
+      "Mobile application for iOS/Android",
+      "Web platform with team management features",
+      "API for integration with development workflows",
+      "Educational content and best practice guides",
+      "User research report with accessibility community feedback",
+      "Go-to-market strategy for developer adoption"
+    ],
+    "additional_context": "Partnership with National Accessibility Foundation and local disability advocacy groups. Access to testing facilities and user feedback sessions with people with various disabilities. Focus on practical tools that can be integrated into existing development workflows. Consider both automated testing and human evaluation components."
+  }
+] 
