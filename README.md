@@ -1,254 +1,312 @@
 # NAT Ignite Matchmaker
 
-Automated matchmaking service for NAT Ignite 2025.
+A sophisticated automated team formation system for NAT Ignite 2025. This system uses advanced algorithms including the Hungarian method and k-medoids clustering to optimally match participants into balanced teams and assign them to appropriate problems.
 
-## Local Development
+## Features
 
-To launch the local development stack, you will need Docker and Docker Compose installed.
+- **3-Phase Matching Algorithm**: Advanced participant-to-problem assignment, team formation, and final team-problem matching
+- **Hungarian Algorithm**: Optimal assignment using cost matrices
+- **K-Medoids Clustering**: Sophisticated team formation with role and skill balance
+- **AI-Powered Analysis**: OpenAI integration for team composition evaluation
+- **Modern Web Dashboard**: React/TypeScript frontend for visualization and management
+- **Real-time Processing**: Celery-based background task processing
+- **Export Capabilities**: JSON and CSV export for results
 
-1.  Create a `.env` file from the example:
-    ```bash
-    cp env.example .env
-    ```
-2.  Add your OpenAI API key to the `.env` file.
-3.  Build and run the services:
-    ```bash
-    docker compose up --build
-    ```
+## Quick Start
 
-This will start the following services:
--   **MongoDB:** `localhost:27017`
--   **Redis:** `localhost:6379`
--   **Pinecone Mock:** `localhost:8000`
--   **FastAPI:** `localhost:8001`
--   **Celery Worker:** Processes background tasks.
+### Prerequisites
 
-The API documentation will be available at `http://localhost:8001/docs`. 
+- Docker and Docker Compose
+- Node.js 16+ (for dashboard development)
+- OpenAI API key
 
-## Environment Variables
+### Setup
 
-The following environment variables need to be set in your `.env` file:
+1. **Clone and configure environment:**
+   ```bash
+   git clone <repository-url>
+   cd nat_ignite_matchmaker
+   cp env.example .env
+   # Add your OPENAI_API_KEY to .env file
+   ```
 
-- `OPENAI_API_KEY`: Your API key for OpenAI services.
-- `PINECONE_API_KEY`: Your API key for Pinecone. For local development with the mock server, this can be a dummy value.
-- `PINECONE_ENV`: The Pinecone environment to use (e.g., `us-east-1`).
+2. **Start the backend services:**
+   ```bash
+   docker compose up --build
+   ```
 
-## Stage One: Preliminary Matching
+3. **Start the dashboard (development):**
+   ```bash
+   cd dashboard
+   npm install
+   npm run dev
+   ```
 
-The first stage of the matching process creates preliminary clusters of participants who are good fits for the same problems. It works as follows:
+4. **Access the application:**
+   - Dashboard: `http://localhost:3000`
+   - API Documentation: `http://localhost:8000/docs`
+   - API Server: `http://localhost:8000`
 
-1.  **Cost Matrix Construction:** A cost is calculated for each participant-problem pair using a weighted formula.
-2.  **Assignment:** The Hungarian algorithm is used to assign each participant to a problem slot, minimizing the total cost across all assignments.
+## Architecture
 
-### Cost Function
+### Backend Services
 
-The cost function is a weighted sum of five terms:
+- **FastAPI** (`localhost:8000`): REST API server
+- **MongoDB** (`localhost:27017`): Primary database
+- **Redis** (`localhost:6379`): Task queue and caching
+- **Celery Worker**: Background task processing
 
-| Term                  | Weight | Description                                                                 |
-| --------------------- | ------ | --------------------------------------------------------------------------- |
-| Skill Gap             | 0.35   | The average gap between the participant's skills and the problem's needs.   |
-| Role Alignment        | 0.20   | How well the participant's preferred roles match the problem's needs.         |
-| Motivation Similarity | 0.15   | The cosine similarity between the participant and problem motivation vectors. |
-| Ambiguity Fit         | 0.20   | The difference in tolerance for ambiguity between participant and problem.    |
-| Workload Fit          | 0.10   | The difference between the participant's availability and the estimated load. |
+### Core Components
 
-### Running Stage One
+```
+app/
+├── api/           # REST API endpoints
+├── matching/      # Core matching algorithms
+├── llm/          # OpenAI integration
+├── models.py     # Database schemas
+└── worker/       # Celery task definitions
 
-To trigger the Stage One matching process, send a POST request to the `/api/match/stage1` endpoint:
+dashboard/
+├── src/
+│   ├── components/  # React components
+│   ├── types.ts    # TypeScript interfaces
+│   └── api.ts      # API client
+└── package.json
 
-```bash
-curl -X POST http://localhost:8000/api/match/stage1
+tests/
+├── e2e/           # End-to-end tests
+├── fixtures/      # Test data
+└── test_*.py      # Unit tests
 ```
 
-This will return a task ID:
+## How It Works
 
-```json
-{
-  "task_id": "a-celery-task-id",
-  "status": "started"
+### Phase 1: Individual-Problem Assignment
+
+Participants are initially assigned to problem groups using a weighted cost function:
+
+- **Skill Gap** (35%): Measures alignment between participant skills and problem requirements
+- **Role Alignment** (20%): Matches preferred roles with problem needs
+- **Motivation Similarity** (15%): Uses semantic embeddings to match interests
+- **Ambiguity Tolerance** (20%): Aligns comfort with undefined problem aspects
+- **Workload Capacity** (10%): Matches availability with time requirements
+
+### Phase 2: Team Formation
+
+Within each problem group, participants are formed into optimal teams using:
+
+- **K-Medoids Clustering**: Groups participants with complementary skills
+- **Role Balance Enforcement**: Ensures diverse role representation
+- **Skill Coverage Optimization**: Maximizes unique skills per team
+- **Hungarian Assignment**: Fills remaining slots optimally
+
+### Phase 3: Team-Problem Assignment
+
+Final teams are assigned to specific problems using:
+
+- **Team Vector Aggregation**: Converts teams to single representative vectors
+- **Hungarian Algorithm**: Optimal one-to-one team-problem matching
+- **Global Cost Minimization**: Achieves best overall assignment
+
+## API Usage
+
+### Starting the Matching Process
+
+```bash
+# Phase 1: Individual assignment
+curl -X POST http://localhost:8000/api/simple/phase1
+
+# Phase 2: Team formation  
+curl -X POST http://localhost:8000/api/simple/phase2
+
+# Phase 3: Final assignment
+curl -X POST http://localhost:8000/api/simple/phase3
+
+# Check status
+curl http://localhost:8000/api/simple/status
+```
+
+### Retrieving Results
+
+```bash
+# Get all teams
+curl http://localhost:8000/api/dashboard/teams/detailed
+
+# Get participants
+curl http://localhost:8000/api/dashboard/participants
+
+# Get problems
+curl http://localhost:8000/api/dashboard/problems/detailed
+
+# Export data
+curl http://localhost:8000/api/export/teams
+```
+
+## Dashboard Features
+
+### Overview Tab
+- Summary statistics and system status
+- Quick action buttons for common tasks
+- Real-time matching progress
+
+### Participants Tab
+- Searchable participant list with skills and roles
+- Individual participant detail modals
+- Assignment status tracking
+
+### Problems Tab
+- Problem gallery with categories and difficulty
+- Detailed requirement specifications
+- Team assignment status
+
+### Teams Tab
+- Team composition with member details
+- Skill coverage and diversity metrics
+- AI-generated team analysis
+- Manual editing capabilities
+
+### Statistics Tab
+- Performance metrics across all phases
+- Cost analysis and efficiency measures
+- Historical trend tracking
+
+## Testing
+
+The project includes comprehensive test coverage:
+
+```bash
+# Run all tests
+pytest tests/
+
+# Run specific test categories
+pytest tests/test_hungarian.py      # Algorithm tests
+pytest tests/test_teamflow.py       # Team formation tests
+pytest tests/e2e/                  # End-to-end tests
+```
+
+### Test Data Generation
+
+```bash
+# Generate synthetic test data
+python tools/generate_demo_data.py --participants 200 --problems 15
+
+# Run full pipeline test
+python -m pytest tests/e2e/test_full_rehearsal.py -v
+```
+
+## Configuration
+
+### Environment Variables
+
+Create a `.env` file with:
+
+```bash
+# Required
+OPENAI_API_KEY=your_openai_api_key_here
+
+# Optional (defaults provided)
+MONGODB_URI=mongodb://localhost:27017/nat_ignite_matchmaker
+REDIS_URL=redis://localhost:6379
+PINECONE_API_KEY=dummy_for_local_dev
+PINECONE_ENV=us-east-1
+```
+
+### Algorithm Tuning
+
+Modify matching weights in `app/config.py`:
+
+```python
+# Phase 1 weights (individual assignment)
+PHASE1_WEIGHTS = {
+    "skill_gap": 0.35,
+    "role_alignment": 0.20,
+    "motivation_similarity": 0.15,
+    "ambiguity_fit": 0.20,
+    "workload_fit": 0.10
 }
+
+# Team formation parameters
+TEAM_SIZE_TARGET = 5
+TEAM_SIZE_MIN = 3
+TEAM_SIZE_MAX = 7
 ```
 
-You can monitor the progress of the task by connecting to the status stream:
+## Production Deployment
+
+### Docker Production
 
 ```bash
-curl http://localhost:8000/api/match/stage1/status
+# Build production images
+docker compose -f docker-compose.prod.yml up --build
+
+# Scale workers
+docker compose -f docker-compose.prod.yml up --scale worker=3
 ```
 
-## Stage Two: Internal Team Formation
-
-The second stage refines the preliminary clusters into final teams using sophisticated clustering and optimization algorithms:
-
-1. **K-Medoids Clustering:** Each preliminary cluster is subdivided using k-medoids with PAM initialization
-2. **Slot Optimization:** Linear assignment is used to fill remaining team slots while enforcing role coverage constraints
-3. **Coverage Metrics:** Each team is evaluated on diversity, skill coverage, and role balance
-
-### Pairwise Cost Function
-
-The internal team formation uses a pairwise cost function between participants:
-
-```
-Cost = 0.4 × role_diversity_penalty + 0.3 × skill_overlap_penalty + 0.3 × comm_style_clash - 0.2 × motivation_similarity
-```
-
-Where:
-- **Role Diversity Penalty:** Penalty for lack of role compatibility (0-1)
-- **Skill Overlap Penalty:** Penalty for excessive overlap in high-skill areas (0-1)  
-- **Communication Style Clash:** Mismatch in availability and communication patterns (0-1)
-- **Motivation Similarity:** Cosine similarity bonus for aligned motivations (0-1)
-
-### Team Metrics
-
-Each final team is evaluated on:
-
-| Metric | Description | Range |
-|--------|-------------|-------|
-| `skills_covered` | Ratio of unique skills to team size | 0-10+ |
-| `diversity_score` | Average of role and skill diversity | 0-1 |
-| `confidence_score` | Average skill proficiency level | 0-1 |
-| `role_balance_flag` | No single role dominates >60% of team | Boolean |
-| `role_coverage` | Fraction of total roles represented | 0-1 |
-
-### Running Stage Two
-
-After Stage One completes, trigger Stage Two matching:
+### Dashboard Production Build
 
 ```bash
-curl -X POST http://localhost:8000/api/match/phase2
+cd dashboard
+npm run build
+# Serve dist/ folder with your preferred web server
 ```
 
-Monitor progress and view team summaries:
+## Troubleshooting
+
+### Common Issues
+
+**Backend won't start:**
+- Check that MongoDB and Redis are running
+- Verify environment variables in `.env`
+- Check logs: `docker compose logs api`
+
+**Dashboard shows errors:**
+- Ensure backend is running on `localhost:8000`
+- Check browser console for specific errors
+- Verify API endpoints are accessible
+
+**Matching fails:**
+- Check OpenAI API key is valid
+- Verify sufficient participant and problem data
+- Monitor Celery worker logs
+
+**Performance issues:**
+- Increase Docker memory allocation
+- Scale Celery workers
+- Optimize database indices
+
+### Debugging Commands
 
 ```bash
-curl http://localhost:8000/api/match/phase2/status
+# Check system health
+curl http://localhost:8000/health
+
+# View database status
+docker compose exec mongo mongosh nat_ignite_matchmaker
+
+# Monitor Celery tasks
+docker compose logs worker -f
+
+# Test API endpoints
+curl http://localhost:8000/api/simple/status
 ```
 
-### Example Final Team Output
+## Contributing
 
-```json
-{
-  "team_id": "team_1",
-  "members": [
-    {
-      "participant_id": "507f1f77bcf86cd799439011",
-      "name": "Alice Johnson",
-      "email": "alice@example.com",
-      "primary_roles": ["developer", "designer"],
-      "availability_hours": 30
-    },
-    {
-      "participant_id": "507f1f77bcf86cd799439012",
-      "name": "Bob Smith",
-      "email": "bob@example.com", 
-      "primary_roles": ["product_manager"],
-      "availability_hours": 25
-    }
-  ],
-  "team_size": 4,
-  "skills_covered": 0.75,
-  "diversity_score": 0.82,
-  "confidence_score": 0.68,
-  "role_balance_flag": true,
-  "role_coverage": 0.67
-}
-```
+1. Fork the repository
+2. Create a feature branch
+3. Write tests for new functionality
+4. Ensure all tests pass: `pytest tests/`
+5. Submit a pull request
 
-## Stage Three: Final Team-to-Problem Assignment
+## License
 
-The third and final stage assigns completed teams to specific problems using optimal matching algorithms:
+This project is licensed under the MIT License. See LICENSE file for details.
 
-1. **Team Vector Aggregation:** Each team is converted into a single vector representation
-2. **Cost Matrix Construction:** Team-problem costs are calculated using the same five-term formula
-3. **Hungarian Algorithm:** Optimal one-to-one assignment minimizes total cost
-4. **Assignment Storage:** Final mappings are stored with comprehensive statistics
+## Support
 
-### Team Vector Fields
-
-Each team is aggregated into a `TeamVector` with the following fields:
-
-| Field | Description | Aggregation Method |
-|-------|-------------|-------------------|
-| `avg_skill_levels` | Average posterior skill means per skill | Mean across team members |
-| `role_weights` | Normalized role distribution | Count-based weights summing to 1.0 |
-| `min_availability` | Team capacity bottleneck | Minimum member availability |
-| `avg_motivation_embedding` | Team motivation vector | Element-wise mean of embeddings |
-| `avg_communication_style` | Communication preference | Availability-based proxy (0-1) |
-| `avg_ambiguity_tolerance` | Ambiguity handling preference | Mean tolerance across members |
-| `avg_confidence_score` | Overall skill confidence | Mean normalized skill levels |
-
-### Team-Problem Cost Function
-
-The exact cost function equation for team-to-problem assignment is:
-
-```
-Cost = 0.35 × skill_gap + 0.20 × role_alignment + 0.15 × motivation_similarity + 0.20 × ambiguity_fit + 0.10 × workload_fit
-```
-
-Where:
-- **Skill Gap:** Average gap between team skills and problem requirements
-- **Role Alignment:** 1 - (team_role_weights · problem_role_preferences)
-- **Motivation Similarity:** Cosine distance between team and problem embeddings
-- **Ambiguity Fit:** |team_ambiguity_tolerance - problem_ambiguity|
-- **Workload Fit:** max(0, required_hours - team_min_availability) / 40
-
-### Running Stage Three
-
-After Stage Two completes, trigger final assignment:
-
-```bash
-curl -X POST http://localhost:8000/api/match/phase3
-```
-
-Monitor progress and view assignment results:
-
-```bash
-curl http://localhost:8000/api/match/phase3/status
-```
-
-### Example Assignment Output
-
-```json
-{
-  "assignment_id": "507f1f77bcf86cd799439020",
-  "assignments": {
-    "problem_507f1f77bcf86cd799439013": "team_1",
-    "problem_507f1f77bcf86cd799439014": "team_2",
-    "problem_507f1f77bcf86cd799439015": "team_3"
-  },
-  "statistics": {
-    "assignment_count": 3,
-    "total_cost": 2.45,
-    "mean_cost": 0.82,
-    "worst_case_cost": 1.15,
-    "best_case_cost": 0.67,
-    "assignment_efficiency": 0.84
-  },
-  "timestamp": "2025-01-27T10:30:00Z"
-}
-```
-
-### Troubleshooting Assignment Diagnostics
-
-#### Interpreting `worst_case_cost`
-
-The `worst_case_cost` indicates the highest individual team-problem assignment cost. High values suggest:
-
-- **> 2.0:** Significant skill gaps or role mismatches
-- **> 3.0:** Major incompatibilities - consider team rebalancing
-- **> 4.0:** Critical issues - manual intervention recommended
-
-#### Common Issues
-
-| Issue | Symptom | Solution |
-|-------|---------|----------|
-| High skill gaps | `mean_cost` dominated by skill_gap component | Add participants with missing skills |
-| Role mismatches | Low `assignment_efficiency` | Adjust team role distributions |
-| Workload imbalance | High workload_fit costs | Balance team availability hours |
-| Motivation divergence | High motivation_similarity costs | Review problem descriptions |
-
-#### Assignment Efficiency Interpretation
-
-- **> 0.8:** Excellent assignments with good matches
-- **0.6-0.8:** Acceptable assignments with minor issues
-- **0.4-0.6:** Problematic assignments requiring review
-- **< 0.4:** Poor assignments - consider rerunning previous stages 
+For questions or issues:
+1. Check the troubleshooting section above
+2. Review the API documentation at `http://localhost:8000/docs`
+3. Examine test files in `tests/` for usage examples
+4. Open an issue on GitHub for bugs or feature requests 

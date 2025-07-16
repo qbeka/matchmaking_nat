@@ -104,3 +104,37 @@ Thumbs.db
 .mypy_cache/
 .dmypy.json
 dmypy.json
+
+# Development and debug test files (keeping only organized tests in tests/ folder)
+test_*.py
+simple_dry_run.py
+run_*_simulation*.py
+run_full_dry_run.py
+run_dashboard_flow.py
+generate_*.py
+process_*.py
+view_results.py
+setup_*.py
+locustfile.py
+
+# Test data files
+test_data_*.json
+dashboard_data.json
+natportal_*.json
+*_submissions.json
+*_problems.json
+
+# Development artifacts
+.parcel-cache/
+.vite/
+dist/
+*.log
+build/
+
+# Package lock files for sub-projects
+dashboard/package-lock.json
+
+# Summary files cleaned up
+*_SUMMARY.md
+TESTING_GUIDE.md
+dashboard/README.md
