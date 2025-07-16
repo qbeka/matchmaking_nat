@@ -105,36 +105,51 @@ Thumbs.db
 .dmypy.json
 dmypy.json
 
-# Development and debug test files (keeping only organized tests in tests/ folder)
-test_*.py
-simple_dry_run.py
-run_*_simulation*.py
-run_full_dry_run.py
-run_dashboard_flow.py
+# Cache directories
+.ruff_cache/
+.parcel-cache/
+
+# Node modules and frontend build artifacts
+node_modules/
+dashboard/dist/
+dashboard/node_modules/
+dashboard/.parcel-cache/
+
+# Temporary data files
+test_data_*.json
+*_test_data.json
+dashboard_data.json
+
+# Temporary scripts and debug files
+setup_and_test.py
+run_*.py
 generate_*.py
 process_*.py
-view_results.py
-setup_*.py
-locustfile.py
+*_debug.py
+*_temp.py
+quick_test.py
+verify_system.py
 
-# Test data files
-test_data_*.json
-dashboard_data.json
-natportal_*.json
-*_submissions.json
-*_problems.json
-
-# Development artifacts
-.parcel-cache/
-.vite/
-dist/
-*.log
-build/
-
-# Package lock files for sub-projects
-dashboard/package-lock.json
-
-# Summary files cleaned up
+# Summary and documentation files (keeping only main README)
 *_SUMMARY.md
-TESTING_GUIDE.md
-dashboard/README.md
+*_GUIDE.md
+*_READY.md
+*_SUCCESS.md
+AI_*.md
+FIXES_*.md
+ENHANCED_*.md
+WHITE_SCREEN_*.md
+DASHBOARD_*.md
+NATPORTAL_*.md
+DRY_RUN_*.md
+
+# Development and testing artifacts
+env_test_report.json
+natportal_*.json
+*_simulation*.py
+test_*.py
+locustfile.py
+view_results.py
+
+# Pre-commit and development tools
+.pre-commit-config.yaml

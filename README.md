@@ -1,312 +1,248 @@
 # NAT Ignite Matchmaker
 
-A sophisticated automated team formation system for NAT Ignite 2025. This system uses advanced algorithms including the Hungarian method and k-medoids clustering to optimally match participants into balanced teams and assign them to appropriate problems.
+An intelligent team formation system for NAT Ignite 2025 that automatically matches participants to problems and forms optimal teams using advanced algorithms and AI-powered optimization.
 
-## Features
+## Overview
 
-- **3-Phase Matching Algorithm**: Advanced participant-to-problem assignment, team formation, and final team-problem matching
-- **Hungarian Algorithm**: Optimal assignment using cost matrices
-- **K-Medoids Clustering**: Sophisticated team formation with role and skill balance
-- **AI-Powered Analysis**: OpenAI integration for team composition evaluation
-- **Modern Web Dashboard**: React/TypeScript frontend for visualization and management
-- **Real-time Processing**: Celery-based background task processing
-- **Export Capabilities**: JSON and CSV export for results
+The NAT Ignite Matchmaker is a three-phase system that:
+1. **Phase 1**: Matches individual participants to problems using cost optimization
+2. **Phase 2**: Forms teams from participants assigned to the same problems
+3. **Phase 3**: Assigns teams to final problems using the Hungarian algorithm
+
+The system includes a modern React dashboard for visualization and manual overrides.
 
 ## Quick Start
 
 ### Prerequisites
-
-- Docker and Docker Compose
-- Node.js 16+ (for dashboard development)
+- Python 3.9+
+- Node.js 16+
+- Docker & Docker Compose
 - OpenAI API key
 
 ### Setup
 
 1. **Clone and configure environment:**
    ```bash
-   git clone <repository-url>
+   git clone <your-repo-url>
    cd nat_ignite_matchmaker
    cp env.example .env
-   # Add your OPENAI_API_KEY to .env file
+   # Add your OPENAI_API_KEY to .env
    ```
 
-2. **Start the backend services:**
+2. **Start the system:**
    ```bash
    docker compose up --build
    ```
 
-3. **Start the dashboard (development):**
+3. **Access the services:**
+   - **Backend API**: http://localhost:8000 (FastAPI docs: /docs)
+   - **Dashboard**: http://localhost:3000
+   - **MongoDB**: localhost:27017
+   - **Redis**: localhost:6379
+
+### Running a Complete Matching Process
+
+1. **Load test data and run matching:**
    ```bash
-   cd dashboard
-   npm install
-   npm run dev
+   python setup_and_test.py --size huge  # For 200 participants
    ```
 
-4. **Access the application:**
-   - Dashboard: `http://localhost:3000`
-   - API Documentation: `http://localhost:8000/docs`
-   - API Server: `http://localhost:8000`
+2. **Or run phases individually:**
+   ```bash
+   curl -X POST http://localhost:8000/api/match/phase1
+   curl -X POST http://localhost:8000/api/match/phase2  
+   curl -X POST http://localhost:8000/api/match/phase3
+   ```
 
-## Architecture
+3. **View results in the dashboard** at http://localhost:3000
+
+## System Architecture
 
 ### Backend Services
+- **FastAPI Application** (`app/`): Core matching logic and REST API
+- **MongoDB**: Stores participants, problems, teams, and assignments
+- **Redis**: Caches intermediate results and manages task queues
+- **Celery Worker**: Processes background matching tasks
 
-- **FastAPI** (`localhost:8000`): REST API server
-- **MongoDB** (`localhost:27017`): Primary database
-- **Redis** (`localhost:6379`): Task queue and caching
-- **Celery Worker**: Background task processing
+### Frontend Dashboard
+- **React/TypeScript** (`dashboard/`): Modern UI for visualization
+- **Tailwind CSS**: Clean, responsive styling
+- **Parcel**: Build tool for fast development
 
-### Core Components
+### Core Algorithms
 
-```
-app/
-├── api/           # REST API endpoints
-├── matching/      # Core matching algorithms
-├── llm/          # OpenAI integration
-├── models.py     # Database schemas
-└── worker/       # Celery task definitions
+#### Phase 1: Individual-Problem Matching
+Uses a weighted cost function with the Hungarian algorithm:
 
-dashboard/
-├── src/
-│   ├── components/  # React components
-│   ├── types.ts    # TypeScript interfaces
-│   └── api.ts      # API client
-└── package.json
+| Component | Weight | Description |
+|-----------|--------|-------------|
+| Skill Gap | 0.35 | Gap between participant skills and problem requirements |
+| Role Alignment | 0.20 | Match between preferred roles and needed roles |
+| Motivation Similarity | 0.15 | Cosine similarity of motivation vectors |
+| Ambiguity Tolerance | 0.20 | Comfort level with problem uncertainty |
+| Workload Fit | 0.10 | Availability vs estimated time commitment |
 
-tests/
-├── e2e/           # End-to-end tests
-├── fixtures/      # Test data
-└── test_*.py      # Unit tests
-```
+#### Phase 2: Team Formation  
+Forms teams from participants assigned to the same problem using:
+- **Strict team size enforcement** (exactly 5 members per team)
+- **Role diversity optimization** 
+- **Skill complementarity analysis**
+- **Leadership assignment** (20% of participants marked as leaders)
 
-## How It Works
+#### Phase 3: Team-Problem Assignment
+Final assignment of formed teams to problems using the Hungarian algorithm with team-problem cost matrices.
 
-### Phase 1: Individual-Problem Assignment
+## API Endpoints
 
-Participants are initially assigned to problem groups using a weighted cost function:
+### Core Matching
+- `POST /api/match/phase1` - Run individual-problem matching
+- `POST /api/match/phase2` - Form teams from assignments  
+- `POST /api/match/phase3` - Assign teams to problems
+- `GET /api/match/results` - Get complete matching results
+- `GET /api/match/status` - Check current status
 
-- **Skill Gap** (35%): Measures alignment between participant skills and problem requirements
-- **Role Alignment** (20%): Matches preferred roles with problem needs
-- **Motivation Similarity** (15%): Uses semantic embeddings to match interests
-- **Ambiguity Tolerance** (20%): Aligns comfort with undefined problem aspects
-- **Workload Capacity** (10%): Matches availability with time requirements
+### Data Management
+- `GET /api/participants` - List all participants
+- `GET /api/problems` - List all problems
+- `GET /api/teams` - List all teams
+- `POST /api/participants` - Add new participants
+- `POST /api/problems` - Add new problems
 
-### Phase 2: Team Formation
-
-Within each problem group, participants are formed into optimal teams using:
-
-- **K-Medoids Clustering**: Groups participants with complementary skills
-- **Role Balance Enforcement**: Ensures diverse role representation
-- **Skill Coverage Optimization**: Maximizes unique skills per team
-- **Hungarian Assignment**: Fills remaining slots optimally
-
-### Phase 3: Team-Problem Assignment
-
-Final teams are assigned to specific problems using:
-
-- **Team Vector Aggregation**: Converts teams to single representative vectors
-- **Hungarian Algorithm**: Optimal one-to-one team-problem matching
-- **Global Cost Minimization**: Achieves best overall assignment
-
-## API Usage
-
-### Starting the Matching Process
-
-```bash
-# Phase 1: Individual assignment
-curl -X POST http://localhost:8000/api/simple/phase1
-
-# Phase 2: Team formation  
-curl -X POST http://localhost:8000/api/simple/phase2
-
-# Phase 3: Final assignment
-curl -X POST http://localhost:8000/api/simple/phase3
-
-# Check status
-curl http://localhost:8000/api/simple/status
-```
-
-### Retrieving Results
-
-```bash
-# Get all teams
-curl http://localhost:8000/api/dashboard/teams/detailed
-
-# Get participants
-curl http://localhost:8000/api/dashboard/participants
-
-# Get problems
-curl http://localhost:8000/api/dashboard/problems/detailed
-
-# Export data
-curl http://localhost:8000/api/export/teams
-```
+### Export & Analytics
+- `GET /api/export?format=json|csv` - Export results
+- `GET /api/stats` - Get matching statistics
+- `GET /api/dashboard` - Dashboard data endpoint
 
 ## Dashboard Features
 
-### Overview Tab
-- Summary statistics and system status
-- Quick action buttons for common tasks
-- Real-time matching progress
+### Visualization Tabs
+- **Overview**: Summary statistics and quick actions
+- **Participants**: Searchable participant list with assignments
+- **Problems**: Problem details and requirements
+- **Teams**: Team composition with AI-powered insights
+- **Statistics**: Comprehensive performance metrics
 
-### Participants Tab
-- Searchable participant list with skills and roles
-- Individual participant detail modals
-- Assignment status tracking
+### Team Management
+- **Manual Editor**: Drag-and-drop interface for team reassignment
+- **AI Suggestions**: Intelligent recommendations for team optimization  
+- **Export Tools**: Download results in multiple formats
+- **Real-time Updates**: Live statistics and status monitoring
 
-### Problems Tab
-- Problem gallery with categories and difficulty
-- Detailed requirement specifications
-- Team assignment status
+### Key Features
+- Clean, modern interface following design preferences
+- Search and filter capabilities across all data
+- Detailed cost explanations and help tooltips
+- Individual team AI feedback for role balance
+- Leadership indicators and skill visualization
 
-### Teams Tab
-- Team composition with member details
-- Skill coverage and diversity metrics
-- AI-generated team analysis
-- Manual editing capabilities
+## Development
 
-### Statistics Tab
-- Performance metrics across all phases
-- Cost analysis and efficiency measures
-- Historical trend tracking
-
-## Testing
-
-The project includes comprehensive test coverage:
-
+### Running Tests
 ```bash
-# Run all tests
-pytest tests/
+# Run core algorithm tests
+python -m pytest tests/ -v
 
-# Run specific test categories
-pytest tests/test_hungarian.py      # Algorithm tests
-pytest tests/test_teamflow.py       # Team formation tests
-pytest tests/e2e/                  # End-to-end tests
+# Test matching pipeline
+python setup_and_test.py --test
 ```
 
-### Test Data Generation
-
+### Development Mode
 ```bash
-# Generate synthetic test data
-python tools/generate_demo_data.py --participants 200 --problems 15
+# Backend development
+cd app && uvicorn main:app --reload --port 8000
 
-# Run full pipeline test
-python -m pytest tests/e2e/test_full_rehearsal.py -v
+# Frontend development  
+cd dashboard && npm run dev
 ```
+
+### Adding New Features
+1. Backend changes in `app/` (FastAPI, matching algorithms)
+2. Frontend changes in `dashboard/src/` (React components)
+3. Database models in `app/models.py`
+4. API endpoints in `app/api/`
 
 ## Configuration
 
 ### Environment Variables
-
-Create a `.env` file with:
-
 ```bash
-# Required
-OPENAI_API_KEY=your_openai_api_key_here
-
-# Optional (defaults provided)
-MONGODB_URI=mongodb://localhost:27017/nat_ignite_matchmaker
-REDIS_URL=redis://localhost:6379
+OPENAI_API_KEY=your_openai_key_here
 PINECONE_API_KEY=dummy_for_local_dev
 PINECONE_ENV=us-east-1
+MONGODB_URL=mongodb://localhost:27017
+REDIS_URL=redis://localhost:6379
 ```
 
-### Algorithm Tuning
+### Matching Parameters
+Key tunable parameters in `app/config.py`:
+- Team size requirements (default: 5 members)
+- Cost function weights
+- Algorithm selection (Hungarian, strict enforcement)
+- AI scoring thresholds
 
-Modify matching weights in `app/config.py`:
+## Data Format
 
-```python
-# Phase 1 weights (individual assignment)
-PHASE1_WEIGHTS = {
-    "skill_gap": 0.35,
-    "role_alignment": 0.20,
-    "motivation_similarity": 0.15,
-    "ambiguity_fit": 0.20,
-    "workload_fit": 0.10
+### Participant Schema
+```json
+{
+  "participant_id": "unique_id",
+  "name": "Full Name", 
+  "email": "email@domain.com",
+  "self_rated_skills": {"python": 8, "design": 6},
+  "primary_roles": ["developer", "designer"],
+  "motivation": "text description",
+  "availability_hours": 30,
+  "ambiguity_comfort": 7,
+  "leadership_preference": false
 }
-
-# Team formation parameters
-TEAM_SIZE_TARGET = 5
-TEAM_SIZE_MIN = 3
-TEAM_SIZE_MAX = 7
 ```
 
-## Production Deployment
-
-### Docker Production
-
-```bash
-# Build production images
-docker compose -f docker-compose.prod.yml up --build
-
-# Scale workers
-docker compose -f docker-compose.prod.yml up --scale worker=3
-```
-
-### Dashboard Production Build
-
-```bash
-cd dashboard
-npm run build
-# Serve dist/ folder with your preferred web server
+### Problem Schema  
+```json
+{
+  "problem_id": "unique_id",
+  "title": "Problem Title",
+  "description": "Detailed description", 
+  "required_skills": {"python": 6, "design": 8},
+  "required_roles": ["developer", "designer"],
+  "estimated_hours": 120,
+  "ambiguity_level": 6,
+  "team_size": 5
+}
 ```
 
 ## Troubleshooting
 
 ### Common Issues
+1. **OpenAI API errors**: Verify API key in `.env` file
+2. **Database connection**: Ensure MongoDB is running on port 27017
+3. **Frontend build errors**: Check Node.js version (16+ required)
+4. **Empty teams**: Verify participant data has required fields
 
-**Backend won't start:**
-- Check that MongoDB and Redis are running
-- Verify environment variables in `.env`
-- Check logs: `docker compose logs api`
+### Logs and Debugging
+- Backend logs: `docker compose logs app`
+- Celery worker logs: `docker compose logs worker`  
+- Frontend console: Browser developer tools
+- Database queries: MongoDB Compass on localhost:27017
 
-**Dashboard shows errors:**
-- Ensure backend is running on `localhost:8000`
-- Check browser console for specific errors
-- Verify API endpoints are accessible
+## Production Deployment
 
-**Matching fails:**
-- Check OpenAI API key is valid
-- Verify sufficient participant and problem data
-- Monitor Celery worker logs
-
-**Performance issues:**
-- Increase Docker memory allocation
-- Scale Celery workers
-- Optimize database indices
-
-### Debugging Commands
+The system is designed for containerized deployment:
 
 ```bash
-# Check system health
-curl http://localhost:8000/health
+# Build production images
+docker compose -f docker-compose.prod.yml build
 
-# View database status
-docker compose exec mongo mongosh nat_ignite_matchmaker
-
-# Monitor Celery tasks
-docker compose logs worker -f
-
-# Test API endpoints
-curl http://localhost:8000/api/simple/status
+# Deploy with environment variables
+export OPENAI_API_KEY=your_production_key
+docker compose -f docker-compose.prod.yml up -d
 ```
 
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Write tests for new functionality
-4. Ensure all tests pass: `pytest tests/`
-5. Submit a pull request
+Ensure production environment has:
+- Persistent MongoDB storage
+- Redis persistence configuration  
+- Proper SSL termination
+- Environment-specific API keys
 
 ## License
 
-This project is licensed under the MIT License. See LICENSE file for details.
-
-## Support
-
-For questions or issues:
-1. Check the troubleshooting section above
-2. Review the API documentation at `http://localhost:8000/docs`
-3. Examine test files in `tests/` for usage examples
-4. Open an issue on GitHub for bugs or feature requests 
+This project is developed for NAT Ignite 2025. Please contact the development team for usage permissions. 
