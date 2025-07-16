@@ -110,8 +110,13 @@ class MatchmakingTester:
             
             for i in range(0, max_wait, wait_interval):
                 if self.docker_process.poll() is not None:
-                    # Process has terminated
+                    # Process has terminated - get the output
+                    stdout, stderr = self.docker_process.communicate()
                     logger.error("❌ Docker compose process terminated unexpectedly")
+                    if stdout:
+                        logger.error(f"   Output: {stdout.strip()}")
+                    if stderr:
+                        logger.error(f"   Error: {stderr.strip()}")
                     return False
                 
                 if self.check_backend_health():
@@ -154,7 +159,7 @@ class MatchmakingTester:
     def check_backend_health(self) -> bool:
         """Check if the backend services are running."""
         try:
-            response = self.session.get(f"{self.base_url}/health", timeout=5)
+            response = self.session.get(f"{self.base_url}/health-check", timeout=5)
             if response.status_code == 200:
                 return True
             else:
